@@ -2,14 +2,14 @@
 
 This repository contains multiple utilsbash scripts.
 
-## extract <file>
+## $ extract <file>
 
-## git open
+## $ git open
 
-## git prev
+## $ git prev
 
-## git recent
+## $ git recent
 
-## git vlog
+## $ git vlog
 
-## portpid <port>
+## $ portpid <port>
