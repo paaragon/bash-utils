@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Get the name of the current branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Get the name of the previously checked out branch from the reflog
+previous_branch=$(git reflog | sed -n 's/.*moving from \([^ ]*\) to '"$current_branch"'.*/\1/p' | head -n 1)
+
+# If there's no previous branch, notify the user and exit
+if [ -z "$previous_branch" ]; then
+    echo "No previous branch found."
+    exit 1
+fi
+
+# Checkout to the previous branch
+git checkout "$previous_branch"

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Check if an argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <tag>"
+    exit 1
+fi
+
+# Get the previous tag
+previous_tag=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1 $1))
+
+remote_url=$(git config --get remote.origin.url)
+repo_url=$(echo "$remote_url" | sed -E 's/(git@|:\/\/)([^:\/]+):([^\/]+)\/(.+)\.git/https:\/\/\2\/\3\/\4/')
+
+git log $previous_tag..$1 --reverse --merges --oneline --grep='Merge pull request #'  | grep -o '#[0-9]\+' | awk -v repo_url="$repo_url" -F '#' '{print repo_url"/pull/" $2}'

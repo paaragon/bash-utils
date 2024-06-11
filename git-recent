@@ -1,0 +1,19 @@
+#!/bin/bash
+
+    # Fetch latest branch names and trim the output
+    num_branches=${1:-5}
+    branches=$(git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' | head -n "$num_branches")
+
+    # If no branches found, display a message and return
+    if [ -z "$branches" ]; then
+        echo "No Git branches found."
+        return 1
+    fi
+
+    # Use fzf to create an interactive menu for branch selection
+    branch=$(echo "$branches" | fzf +m --height 50% --border --ansi --cycle --border=none --reverse)
+
+    # Check if a branch was selected
+    if [ -n "$branch" ]; then
+        git checkout "$branch"
+    fi

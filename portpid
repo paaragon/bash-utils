@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Show PID of processes listening on a specific port
+# Usage: ./script.sh <port_number>
+
+# Validate input parameters
+if [ -z "$1" ]; then
+    echo "Usage: $0 <port_number>"
+    exit 1
+fi
+
+# Check if script is run with sudo
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run this script with sudo."
+    exit 1
+fi
+
+# Assign the port number to a variable
+TARGET_PORT="$1"
+
+# Display processes listening on the specified port
+lsof -i -P | grep LISTEN | grep :3000 | awk '{print $2}'

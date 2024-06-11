@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Switch to the main branch (change 'main' to your main branch name if different)
+git checkout main
+
+# Fetch latest changes from remote and prune tracking branches
+git fetch --prune
+
+# List all local branches merged into main
+merged_branches=$(git branch --merged main | grep -v "main")
+
+# Loop through each merged branch and delete it
+echo "Deleting merged branches..."
+for branch in $merged_branches
+do
+    # Delete the branch
+    git branch -d $branch
+    echo "Deleted branch: $branch"
+done
+
+echo "Cleanup complete."

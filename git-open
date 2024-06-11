@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Get the Git URL
+GIT_URL=$(git config --get remote.origin.url)
+
+# Check if HTTPS_URL is already set
+if [ -z "$GIT_URL" ]; then
+    echo "Error: Git URL is not set."
+    exit 1
+fi
+
+# Convert to HTTPS URL
+HTTPS_URL=$(echo "$GIT_URL" | sed -E 's/(git@|:\/\/)([^:\/]+):([^\/]+)\/(.+)\.git/https:\/\/\2\/\3\/\4/')
+
+# Open HTTPS URL
+open "$HTTPS_URL"
